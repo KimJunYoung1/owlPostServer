@@ -11,7 +11,7 @@ const userinfo = new Schema(
     sex: Boolean,
     select: Boolean,
     blackList: [{ type: String }],
-    partner_id: String,
+    partner_nickname: String,
   },
   {
     versionKey: false,
