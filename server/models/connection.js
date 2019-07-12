@@ -11,7 +11,7 @@ db.once('open', () => {
 
 module.exports = () => {
   function connect() {
-    mongoose.connect('mongodb://localhost:27017/test', { useNewUrlParser: true });
+    mongoose.connect(`mongodb://Jveloper:${PASSWORD}@52.15.57.160:27017/test`, { useNewUrlParser: true });
   }
   connect();
 };
