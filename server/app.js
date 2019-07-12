@@ -6,7 +6,7 @@ const connectDB = require('./models/connection');
 
 const app = express();
 
-const port = 8080;
+// const port = 8080;
 const signUp = require('./controllers/signup');
 const signin = require('./controllers/signin');
 
@@ -26,6 +26,6 @@ app.get('/user/signin', signin);
 app.post('/user/signup', signUp);
 app.post('/letter/send', sendletter);
 
-app.listen(port, () => {
+app.listen('3.15.161.138:5000', () => {
   console.log('sucess!');
 });
