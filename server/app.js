@@ -10,6 +10,7 @@ const port = 8080;
 const signUp = require('./controllers/signup');
 const signin = require('./controllers/signin');
 
+const sendletter = require('./middleware/sendletter');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -24,7 +25,7 @@ app.get('/', (req, res) => {
 
 app.get('/user/signin', signin);
 app.post('/user/signup', signUp);
-
+app.post('/letter/send', sendletter);
 
 app.listen(port, () => {
   console.log('sucess!');
