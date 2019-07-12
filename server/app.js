@@ -9,8 +9,8 @@ const app = express();
 const port = 8080;
 const signUp = require('./controllers/signup');
 const signin = require('./controllers/signin');
-// const signUp = require('./middleware/signup');
-// const sendletter = require('./middleware/sendletter');
+const signUp = require('./middleware/signup');
+const sendletter = require('./middleware/sendletter');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
