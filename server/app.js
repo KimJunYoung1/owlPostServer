@@ -10,14 +10,13 @@ const port = 8080;
 const signUp = require('./controllers/signup');
 const signin = require('./controllers/signin');
 
-const sendletter = require('./middleware/sendletter');
+const sendletter = require('./controllers/sendletter');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
 connectDB();
-
 
 app.get('/', (req, res) => {
   res.send('보내지나여 :3');
