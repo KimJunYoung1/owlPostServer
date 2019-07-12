@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
-const PRIVATE_KEY = require('../../config/env');
+require('dotenv').config();
 
 exports.jwtsign = email => {
-  console.log(PRIVATE_KEY);
-  const token = jwt.sign({ email }, PRIVATE_KEY, { expiresIn: '1m' });
+  // process.env.secret
+  console.log(process.env.secret);
+  const token = jwt.sign({ email }, process.env.secret, { expiresIn: '1m' });
   return token;
 };
