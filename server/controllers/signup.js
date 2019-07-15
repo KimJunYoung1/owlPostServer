@@ -3,7 +3,7 @@ const USERINFO = require('../models/userinfo');
 module.exports = (req, res) => {
   // console.log(req.body);
   const { email } = req.body;
-  if (req.body.partner_nickName === null) {
+  if (req.body.partner_nickname === null) {
     USERINFO.findOne({ email })
       .then(result => {
         if (result === null) {
