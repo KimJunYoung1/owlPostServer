@@ -2,6 +2,7 @@ const USERINFO = require('../models/userinfo');
 const jwt = require('../middleware/jwt');
 
 module.exports = (req, res) => {
+  // eslint-disable-next-line no-console
   console.log(req);
   const { email, password } = req.query;
   USERINFO.findOne({ email, password })
