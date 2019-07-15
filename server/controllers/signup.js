@@ -15,5 +15,7 @@ module.exports = (req, res) => {
       }).catch(err => {
         res.status(400).json(err);
       });
+  } else {
+    res.status(400).json('형식에 맞지 않는 userInfo 입니다.');
   }
 };
