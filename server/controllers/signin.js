@@ -2,7 +2,8 @@ const USERINFO = require('../models/userinfo');
 const jwt = require('../middleware/jwt');
 
 module.exports = (req, res) => {
-  const { email, password } = req.body;
+  console.log(req);
+  const { email, password } = req.query;
   USERINFO.findOne({ email, password })
     .then(result => {
       const token = jwt.jwtsign(result.email);
