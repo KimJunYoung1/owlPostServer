@@ -1,9 +1,8 @@
 const LETTERS = require('../models/letters');
 
 module.exports = async (req, res) => {
-  // eslint-disable-next-line camelcase
   const { email, nickname } = req.query;
-  // eslint-disable-next-line camelcase
+  // eslint-disable-next-line no-console
   console.log(req.decode);
   if (req.decode === email) {
     const data = await LETTERS.find({ to: nickname });
