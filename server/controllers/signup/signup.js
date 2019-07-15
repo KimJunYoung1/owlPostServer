@@ -1,4 +1,4 @@
-const USERINFO = require('../models/userinfo');
+const USERINFO = require('../../models/userinfo');
 
 module.exports = (req, res) => {
   // console.log(req.body);
@@ -8,7 +8,7 @@ module.exports = (req, res) => {
       .then(result => {
         if (result === null) {
           USERINFO.collection.insertOne(req.body);
-          res.status(201).json();
+          res.status(201).json('회원가입 되었습니다.');
         } else {
           res.status(400).json('이미 등록된 계정입니다.');
         }
