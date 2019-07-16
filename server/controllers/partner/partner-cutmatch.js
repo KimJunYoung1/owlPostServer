@@ -1,4 +1,4 @@
-const USERINFO = require('../models/userinfo');
+const USERINFO = require('../../models/userinfo');
 
 module.exports = (req, res) => {
   USERINFO.findOne({ email: req.decode })
@@ -10,10 +10,11 @@ module.exports = (req, res) => {
           if (error) {
             res.status(400).json(error);
           }
-          res.status(200).json(`partner ${update}와의 관계가 성공적으로 끊겼습니다.`);
+          res.status(201).json(`partner ${update}와의 관계가 성공적으로 끊겼습니다.`);
         });
       }
-    }).catch(error => {
-      res.status(400).json(error);
+    })
+    .catch(error => {
+      res.status(404).json(error);
     });
 };

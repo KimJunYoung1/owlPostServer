@@ -1,5 +1,5 @@
 /* eslint-disable */
-const USERINFO = require('../models/userinfo');
+const USERINFO = require('../../models/userinfo');
 
 module.exports = async (req, res) => {
   const { nickname } = req.query;
@@ -12,12 +12,13 @@ module.exports = async (req, res) => {
     // await을 위해서 어쩔수 없이 넣어줌
     if (!err) {
       const partnerExist = docs.map(users => {
-        if (users.partner_nickname === null) { return [users.nickname, users.sex, users.select, user.partner_nickname]; }
+        if (users.partner_nickname === null) {
+          return [users.nickname, users.sex, users.select, user.partner_nickname];
+        }
       });
       console.log(333333);
 
-
-      const recur = function () {
+      const recur = function() {
         const randomSelectUser = partnerExist[Math.floor(Math.random() * partnerExist.length - 1)];
         // 0번째인자 닉네임, 1번째인자 남자/여자, 2번째인자 이성/상관없음, 3번째인자 파트너닉네임
         console.log('너는 왜 안되니?', randomSelectUser);
@@ -30,11 +31,11 @@ module.exports = async (req, res) => {
           userinfos[3] = partnerNick;
           randomSelectUser[3] = userNick;
           (async () => {
-            await USERINFO.findOne({ nickname: userNick })
-            await USERINFO.updateOne({ nickname: userNick }, { partner_nickname: partnerNick })
-            await USERINFO.findOne({ nickname: partnerNick })
-            await USERINFO.updateOne({ nickname: partnerNick}, { partner_nickname: userNick })
-          })();          
+            await USERINFO.findOne({ nickname: userNick });
+            await USERINFO.updateOne({ nickname: userNick }, { partner_nickname: partnerNick });
+            await USERINFO.findOne({ nickname: partnerNick });
+            await USERINFO.updateOne({ nickname: partnerNick }, { partner_nickname: userNick });
+          })();
         };
         // 아래 조건문에 따라 매칭을 시켜줄 함수
 
@@ -43,33 +44,62 @@ module.exports = async (req, res) => {
             // 둘다 상관없을때 매칭
 
             match(userinfos[0], randomSelectUser[0]);
-          } else if (userinfos[2] === true && userinfos[1] === true && randomSelectUser[1] === false) {
+          } else if (
+            userinfos[2] === true &&
+            userinfos[1] === true &&
+            randomSelectUser[1] === false
+          ) {
             // 남자인데 이성만 원할때 여자
 
             match(userinfos[0], randomSelectUser[0]);
-          } else if (userinfos[1] === false && randomSelectUser[2] === true && randomSelectUser[1] === true) {
+          } else if (
+            userinfos[1] === false &&
+            randomSelectUser[2] === true &&
+            randomSelectUser[1] === true
+          ) {
             // 여자인데 상대방이 이성만 원하고 남자일때
 
             match(userinfos[0], randomSelectUser[0]);
-          } else if (userinfos[2] === true && userinfos[1] === false && randomSelectUser[1] === true) {
+          } else if (
+            userinfos[2] === true &&
+            userinfos[1] === false &&
+            randomSelectUser[1] === true
+          ) {
             // 여자인데 이성만 원할때 남자
 
             match(userinfos[0], randomSelectUser[0]);
-          } else if (userinfos[1] === true && randomSelectUser[2] === true && randomSelectUser[1] === false) {
+          } else if (
+            userinfos[1] === true &&
+            randomSelectUser[2] === true &&
+            randomSelectUser[1] === false
+          ) {
             // 남자인데 상대방이 이성만 원하고 여자일때
 
             match(userinfos[0], randomSelectUser[0]);
-          } else if (userinfos[1] === true && userinfos[2] === true && randomSelectUser[1] === false && randomSelectUser[2] && true) {
+          } else if (
+            userinfos[1] === true &&
+            userinfos[2] === true &&
+            randomSelectUser[1] === false &&
+            randomSelectUser[2] &&
+            true
+          ) {
             // 남자인데 이성만 원하고 여자인데 이성만 원할때
 
             match(userinfos[0], randomSelectUser[0]);
           }
         }
-        console.log('userinfos: ', userinfos, 'partnerExist: ', partnerExist, 'randomSelectUser: ', randomSelectUser);
+        console.log(
+          'userinfos: ',
+          userinfos,
+          'partnerExist: ',
+          partnerExist,
+          'randomSelectUser: ',
+          randomSelectUser,
+        );
       };
       recur();
       console.log(444444);
-    //   process.exit();
+      //   process.exit();
     }
   });
   console.log(555555);
