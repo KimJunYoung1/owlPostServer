@@ -5,37 +5,50 @@ module.exports = async (req, res) => {
   const { nickname } = req.query;
   console.log(111111);
   const user = await USERINFO.findOne({ nickname });
-  const userinfos = [user.nickname, user.sex, user.select, user.partner_nickname];
+  
+  const userinfos = [user.nickname, user.sex, user.select, user.partner_nickname, user.blackList];
 
   console.log(222222);
   const results = await USERINFO.find({}, (err, docs) => {
     // await을 위해서 어쩔수 없이 넣어줌
-    if (!err) {
+    
+    if (req.decode === user.email) {    
       const partnerExist = docs.map(users => {
-        if (users.partner_nickname === null) {
-          return [users.nickname, users.sex, users.select, user.partner_nickname];
-        }
+        if (users.partner_nickname === null) { return [users.nickname, users.sex, users.select, users.partner_nickname, users.blackList]; }
       });
       console.log(333333);
 
-      const recur = function() {
+      const recur = function () {
         const randomSelectUser = partnerExist[Math.floor(Math.random() * partnerExist.length - 1)];
         // 0번째인자 닉네임, 1번째인자 남자/여자, 2번째인자 이성/상관없음, 3번째인자 파트너닉네임
         console.log('너는 왜 안되니?', randomSelectUser);
 
         const match = function(userNickName, partnerNickName) {
           console.log('확인을 한번 하자', userNickName, partnerNickName);
-          // if else 걸어서 blacklist 에 for문 돌려서 있는사람인지 확인하고 없다면 계속 진행, 있는사람이라면 recur()돌려서 다시 진행시켜야 함
+          
+          console.log('블랙리스트 정보 : ', userinfos[4], randomSelectUser[4], '-----------')
+
+          for(let i = 0; i < userinfos[4].length; i++){
+            if(userinfos[4][i] === partnerNickName){
+              return recur();
+            }
+          }
+          for(let j = 0; j < randomSelectUser[4].length; j++){
+            if(randomSelectUser[4][j] === userNickName){
+              return recur();
+            }
+          }
+
           const partnerNick = partnerNickName;
           const userNick = userNickName;
           userinfos[3] = partnerNick;
           randomSelectUser[3] = userNick;
           (async () => {
-            await USERINFO.findOne({ nickname: userNick });
-            await USERINFO.updateOne({ nickname: userNick }, { partner_nickname: partnerNick });
-            await USERINFO.findOne({ nickname: partnerNick });
-            await USERINFO.updateOne({ nickname: partnerNick }, { partner_nickname: userNick });
-          })();
+            await USERINFO.findOne({ nickname: userNick })
+            await USERINFO.updateOne({ nickname: userNick }, { partner_nickname: partnerNick })
+            await USERINFO.findOne({ nickname: partnerNick })
+            await USERINFO.updateOne({ nickname: partnerNick}, { partner_nickname: userNick })
+          })();          
         };
         // 아래 조건문에 따라 매칭을 시켜줄 함수
 
@@ -44,62 +57,35 @@ module.exports = async (req, res) => {
             // 둘다 상관없을때 매칭
 
             match(userinfos[0], randomSelectUser[0]);
-          } else if (
-            userinfos[2] === true &&
-            userinfos[1] === true &&
-            randomSelectUser[1] === false
-          ) {
+          } else if (userinfos[2] === true && userinfos[1] === true && randomSelectUser[1] === false) {
             // 남자인데 이성만 원할때 여자
 
             match(userinfos[0], randomSelectUser[0]);
-          } else if (
-            userinfos[1] === false &&
-            randomSelectUser[2] === true &&
-            randomSelectUser[1] === true
-          ) {
+          } else if (userinfos[1] === false && randomSelectUser[2] === true && randomSelectUser[1] === true) {
             // 여자인데 상대방이 이성만 원하고 남자일때
 
             match(userinfos[0], randomSelectUser[0]);
-          } else if (
-            userinfos[2] === true &&
-            userinfos[1] === false &&
-            randomSelectUser[1] === true
-          ) {
+          } else if (userinfos[2] === true && userinfos[1] === false && randomSelectUser[1] === true) {
             // 여자인데 이성만 원할때 남자
 
             match(userinfos[0], randomSelectUser[0]);
-          } else if (
-            userinfos[1] === true &&
-            randomSelectUser[2] === true &&
-            randomSelectUser[1] === false
-          ) {
+          } else if (userinfos[1] === true && randomSelectUser[2] === true && randomSelectUser[1] === false) {
             // 남자인데 상대방이 이성만 원하고 여자일때
 
             match(userinfos[0], randomSelectUser[0]);
-          } else if (
-            userinfos[1] === true &&
-            userinfos[2] === true &&
-            randomSelectUser[1] === false &&
-            randomSelectUser[2] &&
-            true
-          ) {
+          } else if (userinfos[1] === true && userinfos[2] === true && randomSelectUser[1] === false && randomSelectUser[2] && true) {
             // 남자인데 이성만 원하고 여자인데 이성만 원할때
 
             match(userinfos[0], randomSelectUser[0]);
           }
         }
-        console.log(
-          'userinfos: ',
-          userinfos,
-          'partnerExist: ',
-          partnerExist,
-          'randomSelectUser: ',
-          randomSelectUser,
-        );
+        console.log('userinfos: ', userinfos, 'partnerExist: ', partnerExist, 'randomSelectUser: ', randomSelectUser);
       };
       recur();
       console.log(444444);
-      //   process.exit();
+    //   process.exit();
+    } else {
+      res.status(400).json('재로그인이 필요합니다')
     }
   });
   console.log(555555);
