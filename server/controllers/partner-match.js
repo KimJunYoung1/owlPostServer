@@ -2,15 +2,26 @@
 const USERINFO = require('../models/userinfo');
 
 module.exports = async (req, res) => {
+  
+  
+  
+  
+  
+  
+  
+  
   const { nickname } = req.query;
   console.log(111111);
   const user = await USERINFO.findOne({ nickname });
+  
   const userinfos = [user.nickname, user.sex, user.select, user.partner_nickname, user.blackList];
 
   console.log(222222);
   const results = await USERINFO.find({}, (err, docs) => {
     // await을 위해서 어쩔수 없이 넣어줌
+    
     if (req.decode === user.email) {
+    
       const partnerExist = docs.map(users => {
         if (users.partner_nickname === null) { return [users.nickname, users.sex, users.select, users.partner_nickname, users.blackList]; }
       });
@@ -26,7 +37,7 @@ module.exports = async (req, res) => {
           console.log('확인을 한번 하자', userNickName, partnerNickName);
           
           console.log('블랙리스트 정보 : ', userinfos[4], randomSelectUser[4], '-----------')
-          
+
           for(let i = 0; i < userinfos[4].length; i++){
             if(userinfos[4][i] === partnerNickName){
               return recur();
