@@ -6,7 +6,7 @@ module.exports = (req, res) => {
     USERINFO.findOne({ email: req.decode })
       .then(result => {
         const { nickname } = result;
-        LETTERS.findOne({ to: nickname, message: mesEl.message })
+        LETTERS.findOne({ to: nickname, messages: mesEl.messages })
           .then(letterResult => {
             if (letterResult !== null) {
               LETTERS.deleteOne(letterResult)
