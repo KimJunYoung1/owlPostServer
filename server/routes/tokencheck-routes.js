@@ -8,6 +8,7 @@ const cutmatch = require('../controllers/partner/partner-cutmatch');
 const match = require('../controllers/partner/partner-match');
 const blacklist = require('../controllers/blacklist');
 const withdrawal = require('../controllers/delete/withdrawal');
+const deleteletter = require('../controllers/delete/delete-letters');
 
 router.get('/mypage', mypage);
 router.get('/postbox', postbox);
@@ -18,5 +19,6 @@ router.post('/blacklist', blacklist);
 router.put('/cutmatch', cutmatch);
 
 router.delete('/withdrawal', withdrawal);
+router.delete('/deleteletter', deleteletter);
 
 module.exports = router;
