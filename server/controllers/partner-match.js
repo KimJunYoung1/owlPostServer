@@ -24,8 +24,9 @@ module.exports = async (req, res) => {
 
         const match = function(userNickName, partnerNickName) {
           console.log('확인을 한번 하자', userNickName, partnerNickName);
-          // if else 걸어서 blacklist 에 for문 돌려서 있는사람인지 확인하고 없다면 계속 진행, 있는사람이라면 recur()돌려서 다시 진행시켜야 함
+          
           console.log('블랙리스트 정보 : ', userinfos[4], randomSelectUser[4], '-----------')
+          
           for(let i = 0; i < userinfos[4].length; i++){
             if(userinfos[4][i] === partnerNickName){
               return recur();
