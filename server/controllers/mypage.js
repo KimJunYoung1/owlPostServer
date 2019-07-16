@@ -1,15 +1,17 @@
+const USERINFO = require('../models/userinfo');
 const LETTERS = require('../models/letters');
 
 module.exports = async (req, res) => {
-  const { email, nickname } = req.query;
-  if (req.decode === email) {
-    const data = await LETTERS.find({ to: nickname });
-    const data2 = await LETTERS.find({ from: nickname });
+  const userinfos = await USERINFO.findOne({ email: req.decode });
+  const data = await LETTERS.find({ to: userinfos.nickname });
+  const data2 = await LETTERS.find({ from: userinfos.nickname });
 
+  if (req.decode === userinfos.email) {
     const obj = {};
-    obj.nickname = nickname;
+    obj.nickname = userinfos.nickname;
     obj.toData = data;
     obj.fromData = data2;
+
 
     res.status(200).json(obj);
   } else {
