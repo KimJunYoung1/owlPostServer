@@ -5,14 +5,14 @@ module.exports = async (req, res) => {
   const { nickname } = req.query;
   console.log(111111);
   const user = await USERINFO.findOne({ nickname });
-  const userinfos = [user.nickname, user.sex, user.select, user.partner_nickname];
+  const userinfos = [user.nickname, user.sex, user.select, user.partner_nickname, user.blackList];
 
   console.log(222222);
   const results = await USERINFO.find({}, (err, docs) => {
     // await을 위해서 어쩔수 없이 넣어줌
-    if (!err) {
+    if (req.decode === user.email) {
       const partnerExist = docs.map(users => {
-        if (users.partner_nickname === null) { return [users.nickname, users.sex, users.select, user.partner_nickname]; }
+        if (users.partner_nickname === null) { return [users.nickname, users.sex, users.select, users.partner_nickname, users.blackList]; }
       });
       console.log(333333);
 
@@ -25,6 +25,18 @@ module.exports = async (req, res) => {
         const match = function(userNickName, partnerNickName) {
           console.log('확인을 한번 하자', userNickName, partnerNickName);
           // if else 걸어서 blacklist 에 for문 돌려서 있는사람인지 확인하고 없다면 계속 진행, 있는사람이라면 recur()돌려서 다시 진행시켜야 함
+          console.log('블랙리스트 정보 : ', userinfos[4], randomSelectUser[4], '-----------')
+          for(let i = 0; i < userinfos[4].length; i++){
+            if(userinfos[4][i] === partnerNickName){
+              return recur();
+            }
+          }
+          for(let j = 0; j < randomSelectUser[4].length; j++){
+            if(randomSelectUser[4][j] === userNickName){
+              return recur();
+            }
+          }
+
           const partnerNick = partnerNickName;
           const userNick = userNickName;
           userinfos[3] = partnerNick;
@@ -70,6 +82,8 @@ module.exports = async (req, res) => {
       recur();
       console.log(444444);
     //   process.exit();
+    } else {
+      res.status(400).json('재로그인이 필요합니다')
     }
   });
   console.log(555555);
