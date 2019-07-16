@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
     // eslint-disable-next-line max-len
     (async () => {
       // eslint-disable-next-line max-len
-      await USERINFO.update({ nickname: userinfos.nickname }, { blackList: userinfos.blackList.concat(userinfos.partner_nickname), partner_nickname: null });
+      await USERINFO.updateMany({ nickname: userinfos.nickname }, { blackList: userinfos.blackList.concat(userinfos.partner_nickname), partner_nickname: null });
 
       const partnerInfos = await USERINFO.findOne({ nickname: userinfos.partner_nickname });
       await USERINFO.updateOne({ nickname: partnerInfos.nickname }, { partner_nickname: null });

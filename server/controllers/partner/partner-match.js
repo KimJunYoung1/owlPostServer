@@ -3,12 +3,10 @@ const USERINFO = require('../../models/userinfo');
 
 module.exports = async (req, res) => {
   const { nickname } = req.query;
-  console.log(111111);
   const user = await USERINFO.findOne({ nickname });
   
   const userinfos = [user.nickname, user.sex, user.select, user.partner_nickname, user.blackList];
-
-  console.log(222222);
+  
   const results = await USERINFO.find({}, (err, docs) => {
     // await을 위해서 어쩔수 없이 넣어줌
     
@@ -16,18 +14,13 @@ module.exports = async (req, res) => {
       const partnerExist = docs.map(users => {
         if (users.partner_nickname === null) { return [users.nickname, users.sex, users.select, users.partner_nickname, users.blackList]; }
       });
-      console.log(333333);
 
       const recur = function () {
         const randomSelectUser = partnerExist[Math.floor(Math.random() * partnerExist.length - 1)];
         // 0번째인자 닉네임, 1번째인자 남자/여자, 2번째인자 이성/상관없음, 3번째인자 파트너닉네임
-        console.log('너는 왜 안되니?', randomSelectUser);
+
 
         const match = function(userNickName, partnerNickName) {
-          console.log('확인을 한번 하자', userNickName, partnerNickName);
-          
-          console.log('블랙리스트 정보 : ', userinfos[4], randomSelectUser[4], '-----------')
-
           for(let i = 0; i < userinfos[4].length; i++){
             if(userinfos[4][i] === partnerNickName){
               return recur();
@@ -38,7 +31,6 @@ module.exports = async (req, res) => {
               return recur();
             }
           }
-
           const partnerNick = partnerNickName;
           const userNick = userNickName;
           userinfos[3] = partnerNick;
@@ -78,17 +70,16 @@ module.exports = async (req, res) => {
 
             match(userinfos[0], randomSelectUser[0]);
           }
-        }
-        console.log('userinfos: ', userinfos, 'partnerExist: ', partnerExist, 'randomSelectUser: ', randomSelectUser);
+        }       
       };
       recur();
-      console.log(444444);
+      
     //   process.exit();
     } else {
       res.status(400).json('재로그인이 필요합니다')
     }
   });
-  console.log(555555);
+  
   if (userinfos[3] !== null) {
     console.log('who your partner', userinfos);
     res.status(200).json('매칭이 완료되었습니다');
