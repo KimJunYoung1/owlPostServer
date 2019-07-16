@@ -9,6 +9,7 @@ module.exports = async (req, res) => {
   if (req.decode === userinfos.email) {
     const obj = {};
     obj.nickname = userinfos.nickname;
+    obj.partner_nickname = userinfos.partner_nickname;
     obj.toData = data;
     obj.fromData = data2;
 
