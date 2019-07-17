@@ -1,14 +1,15 @@
 const LETTERS = require('../models/letters');
 const USERINFO = require('../models/userinfo');
 
-module.exports = (req, res) => {
-  const { from, to } = req.body;
+module.exports = async (req, res) => {
+  const { to } = req.body;
   if (to !== null) {
-    USERINFO.findOne({ nickname: from, partner_nickName: to })
+    USERINFO.findOne({ nickname: req.decode, partner_nickName: to })
       .then(() => {
         LETTERS.collection.insertOne(req.body);
-        res.status(201).json({ result: 1 });
-      }).catch(err => {
+        res.status(201).json('성공적으로 편지를 전달하였습니다.');
+      })
+      .catch(err => {
         res.status(400).json(err);
       });
   } else {
