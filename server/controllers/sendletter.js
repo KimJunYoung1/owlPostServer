@@ -5,9 +5,11 @@ module.exports = async (req, res) => {
   try {
     const { to } = req.body;
     if (to !== null) {
-      const result = await USERINFO.findOne({ email: req.decode, partner_nickName: to });
-      await LETTERS.collection.insertOne(req.body);
-      await USERINFO.updateOne(result.letterSendtime, { letterSendtime: req.headres.currtime });
+      const result = await USERINFO.findOne({ email: req.decode, partner_nickname: to });
+      if (result !== null) {
+        await LETTERS.collection.insertOne(req.body);
+        await USERINFO.updateOne(result, { letterSendtime: req.headers.currtime });
+      }
       res.status(201).json('성공적으로 편지를 전달하였습니다.');
     } else {
       res.status(400).json('partner matching전 입니다.');
