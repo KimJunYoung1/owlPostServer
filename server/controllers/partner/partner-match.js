@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
             }
           }
           const partnerNick = partnerNickName;
-          const userNick = userNickName;
+          const userNick = userNickName;          
           userinfos[3] = partnerNick;
           randomSelectUser[3] = userNick;
           (async () => {
@@ -83,6 +83,8 @@ module.exports = async (req, res) => {
   if (userinfos[3] !== null) {
     console.log('who your partner', userinfos);
     res.status(200).json('매칭이 완료되었습니다');
+  } else if(userinfos[3] === userinfos[0]){
+    res.status(401).json('현재 매칭가능한 상대가 없습니다')
   } else {
     res.status(400).json('매칭이 진행중입니다');
   }
