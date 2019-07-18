@@ -4,7 +4,7 @@ const USERINFO = require('../models/userinfo');
 module.exports = (req, res) => {
   USERINFO.findOne({ email: req.decode })
     .then(user => {
-      LETTERS.find({ to: user.nickname, from: user.partner_nickname })
+      LETTERS.find({ to: user.nickname })
         .then(letters => {
           res.status(200).json({ user, letters });
         })
