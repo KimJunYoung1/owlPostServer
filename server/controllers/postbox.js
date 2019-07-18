@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
     const obj = {};
     obj.nickname = userinfos.nickname;
     obj.toData = data;
-    console.log(obj);
+    // console.log(obj);
     res.status(200).json(obj);
   } else {
     res.status(400).json('partner가 존재하지 않습니다');
