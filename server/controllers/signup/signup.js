@@ -19,7 +19,6 @@ module.exports = (req, res) => {
           //   });
           // });
 
-
           USERINFO.collection.insertOne({
             email: req.body.email,
             password: shasum,
@@ -29,12 +28,14 @@ module.exports = (req, res) => {
             select: req.body.select,
             blackList: req.body.blackList,
             partner_nickname: req.body.partner_nickname,
+            letterSendtime: req.body.letterSendtime,
           });
           res.status(201).json('회원가입 되었습니다.');
         } else {
           res.status(400).json('이미 등록된 계정입니다.');
         }
-      }).catch(err => {
+      })
+      .catch(err => {
         res.status(400).json(err);
       });
   } else {
