@@ -6,20 +6,26 @@ module.exports = async (req, res) => {
   
   //const userinfos = [user.nickname, user.age, user.sex, user.select, user.partner_nickname, user.blackList];
   // 현재 사용하고 있는 유저 정보
-  const user = await USERINFO.findOne({ nickname });
-  const results = await USERINFO.findOne({ nickname: '23'})
+  const user = await USERINFO.findOne({ nickname });  // user 정보가 {}
+  console.log('s너 어떻게 뜨니',user)
+  const results = await USERINFO.find({$and:[{"nickname":{$ne: nickname}}, {"partner_nickname": null}]});
+  
+  //const results = await USERINFO.findOne({ nickname: '23'})
 
   
-    await USERINFO.updateOne({ nickname }, { partner_nickname: '23' })
+  const randomUser = results[ Math.floor(Math.random() * results.length) ];
+  console.log('찍혀랏',randomUser)
+  
+    await USERINFO.updateOne({ nickname }, { partner_nickname: randomUser.nickname })
     .then(result => console.log('result : ',result))
 
     const myInfo = await USERINFO.findOne({ nickname })
     console.log('MYINFO====>',myInfo)
 
-    await USERINFO.updateOne({ nickname: '23'}, { partner_nickname: nickname })
+    await USERINFO.updateOne({ nickname: randomUser.nickname }, { partner_nickname: nickname })
     .then(result2 => console.log('result2 : ', result2))
 
-    const youInfo = await USERINFO.findOne({ nickname : '23'})
+    const youInfo = await USERINFO.findOne({ nickname : randomUser.nickname })
     console.log('YOUINFO===>', youInfo)
 
     
