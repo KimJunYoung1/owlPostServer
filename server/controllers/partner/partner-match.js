@@ -96,17 +96,17 @@ module.exports = async (req, res) => {
       res.status(200).json('매칭이 완료되었습니다');
       return;      
     } else if(userinfos[1] !== copyRandomSelectUser[copyRandomSelectUser.length - 1][1]){
-      res.status(400).json('매칭이 진행중입니다');
+      res.status(400).json('매칭이 진행중입니다 - 이유 : 현재 같은 연령대가 없습니다');
       return;
     } else if(userinfos[0] === copyRandomSelectUser[copyRandomSelectUser.length - 1][0]){
-      res.status(401).json('매칭이 진행중입니다');
+      res.status(401).json('매칭이 진행중입니다 - 이유 : 본인과 연결되었습니다');
       return;
     } else {
-      res.status(402).json('매칭이 진행중입니다');
+      res.status(402).json('매칭이 진행중입니다 - 이유 : 현재 같은연령대가 없는 경우, 본인과 연결된경우를 제외한 경우의 에러입니다');
       return;
     }
   } else {
-    res.status(403).json('매칭이 진행중입니다');
+    res.status(403).json('매칭이 진행중입니다 - 이유 : 현재 연결할 수 있는 상대가 없습니다');
     return;
   }
   
