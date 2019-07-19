@@ -8,7 +8,9 @@ module.exports = async (req, res) => {
     if (userInfos === null) {
       res.status(403).json('존재하지 않는 유저 정보입니다.');
     } else {
-      await USERINFO.updateOne({ email: partnerInfos.email }, { partner_nickname: null });
+      if (partnerInfos !== null) {
+        await USERINFO.updateOne({ email: partnerInfos.email }, { partner_nickname: null });
+      }
       await USERINFO.deleteOne(userInfos);
       res.status(200).json('성공적으로 회원 탈퇴 되었습니다.');
     }
