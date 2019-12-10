@@ -12,6 +12,7 @@ const userinfo = new Schema(
     select: Boolean,
     blackList: [{ type: String }],
     partner_nickname: String,
+    letterSendtime: String,
   },
   {
     versionKey: false,
