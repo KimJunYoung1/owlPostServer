@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
         await LETTERS.collection.insertOne(req.body);
         await USERINFO.updateOne(result, { letterSendtime: req.headers.currtime });
       }
-      res.status(201).json('성공적으로 편지를 전달하였습니다.');
+      res.status(201).json('부엉이가 출발했습니다!');
     } else {
       res.status(400).json('partner matching전 입니다.');
     }
